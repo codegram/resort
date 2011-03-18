@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Module: Resort::Sortable::InstanceMethods</title>
+<link rel="stylesheet" href="../../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '../..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../_index.html">Index (I)</a> &raquo; 
+    <span class='title'><span class='object_link'><a href="../../Resort.html" title="Resort (module)">Resort</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Sortable.html" title="Resort::Sortable (module)">Sortable</a></span></span>
+     &raquo; 
+    <span class="title">InstanceMethods</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Resort::Sortable::InstanceMethods
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/resort.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>Instance methods to use.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#append_to-instance_method" title="#append_to (instance method)">- (Object) <strong>append_to</strong>(another) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Puts the object right after another object in the list.</p></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#include_in_list%21-instance_method" title="#include_in_list! (instance method)">- (Object) <strong>include_in_list!</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Includes the object in the linked list.</p></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#prepend-instance_method" title="#prepend (instance method)">- (Object) <strong>prepend</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Puts the object in the first position of the list.</p></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#push-instance_method" title="#push (instance method)">- (Object) <strong>push</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Puts the object in the last position of the list.</p></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#siblings-instance_method" title="#siblings (instance method)">- (ActiveRecord::Relation) <strong>siblings</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Default definition of siblings, i.e.</p></div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="append_to-instance_method">
+  
+    - (<tt>Object</tt>) <strong>append_to</strong>(another) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>Puts the object right after another object in the list.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resort.rb', line 155</span>
+
+<span class='kw'>def</span> <span class='id append_to'>append_to</span><span class='lparen'>(</span><span class='id another'>another</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id next'>next</span>
+    <span class='id delete_from_list'>delete_from_list</span>
+  <span class='kw'>elsif</span> <span class='id last?'>last?</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id previous'>previous</span><span class='period'>.</span><span class='id update_attribute'>update_attribute</span><span class='lparen'>(</span><span class='symbol'>:next_id</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+    <span class='kw'>self</span><span class='period'>.</span><span class='id previous'>previous</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id update_attribute'>update_attribute</span><span class='lparen'>(</span><span class='symbol'>:next_id</span><span class='comma'>,</span> <span class='id another'>another</span><span class='period'>.</span><span class='id next_id'>next_id</span><span class='rparen'>)</span>
+  <span class='id another'>another</span><span class='period'>.</span><span class='id update_attribute'>update_attribute</span><span class='lparen'>(</span><span class='symbol'>:next_id</span><span class='comma'>,</span> <span class='kw'>self</span><span class='period'>.</span><span class='id id'>id</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="include_in_list!-instance_method">
+  
+    - (<tt>Object</tt>) <strong>include_in_list!</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>Includes the object in the linked list.</p>
+
+<p>If there are no other objects, it prepends the object so that it is
+in the first position. Otherwise, it appends it to the end of the
+empty list.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+130
+131
+132
+133</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resort.rb', line 130</span>
+
+<span class='kw'>def</span> <span class='id include_in_list!'>include_in_list!</span>
+  <span class='id _siblings'>_siblings</span><span class='period'>.</span><span class='id count'>count</span> <span class='op'>&gt;</span> <span class='int'>0</span> <span class='op'>?</span> <span class='id push'>push</span>\
+                      <span class='op'>:</span> <span class='id prepend'>prepend</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="prepend-instance_method">
+  
+    - (<tt>Object</tt>) <strong>prepend</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>Puts the object in the first position of the list.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resort.rb', line 136</span>
+
+<span class='kw'>def</span> <span class='id prepend'>prepend</span>
+  <span class='kw'>return</span> <span class='kw'>if</span> <span class='id first?'>first?</span>
+
+  <span class='kw'>if</span> <span class='id _siblings'>_siblings</span><span class='period'>.</span><span class='id count'>count</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+    <span class='id delete_from_list'>delete_from_list</span>
+    <span class='id _siblings'>_siblings</span><span class='period'>.</span><span class='id where'>where</span><span class='lparen'>(</span><span class='symbol'>:first</span> <span class='op'>=&gt;</span> <span class='kw'>true</span><span class='rparen'>)</span><span class='period'>.</span><span class='id first'>first</span><span class='period'>.</span><span class='id append_to'>append_to</span><span class='lparen'>(</span><span class='kw'>self</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>self</span><span class='period'>.</span><span class='id update_attribute'>update_attribute</span><span class='lparen'>(</span><span class='symbol'>:first</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="push-instance_method">
+  
+    - (<tt>Object</tt>) <strong>push</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>Puts the object in the last position of the list.</p>
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+148
+149
+150
+151
+152</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resort.rb', line 148</span>
+
+<span class='kw'>def</span> <span class='id push'>push</span>
+  <span class='kw'>return</span> <span class='kw'>if</span> <span class='id last?'>last?</span>
+  <span class='id last_element'>last_element</span> <span class='op'>=</span> <span class='id _siblings'>_siblings</span><span class='period'>.</span><span class='id where'>where</span><span class='lparen'>(</span><span class='symbol'>:next_id</span> <span class='op'>=&gt;</span> <span class='kw'>nil</span><span class='rparen'>)</span><span class='period'>.</span><span class='id first'>first</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id append_to'>append_to</span><span class='lparen'>(</span><span class='id last_element'>last_element</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="siblings-instance_method">
+  
+    - (<tt>ActiveRecord::Relation</tt>) <strong>siblings</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>Default definition of siblings, i.e. every instance of the model.</p>
+
+<p>Can be overriden to specify a different scope for the siblings.
+For example, if we wanted to limit a products tree inside a ProductLine
+scope, we would do the following:</p>
+
+<pre class="code">class Product &lt; ActiveRecord::Base
+  belongs_to :product_line
+
+  resort!
+
+  def siblings
+    self.product_line.products
+  end
+</pre>
+
+<p>This way, every product line is an independent tree of sortable
+products.</p>
+
+  </div>
+</div>
+<div class="tags">
+  <h3>Returns:</h3>
+<ul class="return">
+  
+    <li>
+      
+        <span class='type'>(<tt>ActiveRecord::Relation</tt>)</span>
+      
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the element's siblings relation.</p></div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+122
+123
+124</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/resort.rb', line 122</span>
+
+<span class='kw'>def</span> <span class='id siblings'>siblings</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id class'>class</span><span class='period'>.</span><span class='id scoped'>scoped</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Fri Mar 18 14:49:13 2011 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.5 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>
