@@ -17,9 +17,9 @@ the _weight_ of a given element within a tree. This field has no semantic sense,
 since "84" by itself gives you absolutely no information about an element's
 position or its relations with other elements of the tree.
 
-Resort is implemented quite like a [binary tree](http://en.wikipedia.org/wiki/Binary_tree),
+Resort is implemented like a [linked list](http://en.wikipedia.org/wiki/Linked_list),
 rather than relying on absolute position values. This way, every model
-references a `next` and a `previous`, which seems a bit more sensible :)
+references a `next` element, which seems a bit more sensible :)
 
 ##Usage
 
