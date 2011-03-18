@@ -29,6 +29,8 @@ You must add two fields (`next_id` and `first`) to your model's table:
       def self.up
         add_column :products, :next_id, :integer
         add_column :products, :first,   :boolean
+        add_index :products, :next_id
+        add_index :products, :first
       end
 
       def self.down
