@@ -128,7 +128,7 @@ module Resort
       # in the first position. Otherwise, it appends it to the end of the
       # empty list.
       def include_in_list!
-        _siblings.count > 0 ? push\
+        _siblings.count > 0 ? last!\
                             : prepend
       end
 
@@ -146,22 +146,20 @@ module Resort
 
       # Puts the object in the last position of the list.
       def push
-        return if last?
-        last_element = _siblings.where(:next_id => nil).first
-        self.append_to(last_element)
+        self.append_to(last) unless last?
       end
 
       # Puts the object right after another object in the list.
       def append_to(another)
         if self.next
           delete_from_list
-        elsif last?
-          self.previous.update_attribute(:next_id, nil)
+        elsif last? && self.previous
+          # self.previous.update_attribute(:next_id, nil)
           self.previous = nil
         end
 
-        self.update_attribute(:next_id, another.next_id)
-        another.update_attribute(:next_id, self.id)
+        self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
+        another.update_attribute(:next_id, self.id) if another
       end
 
       private
@@ -180,7 +178,15 @@ module Resort
       end
 
       def last?
-        self.previous && !self.next
+        self.first != true && self.next_id == nil
+      end
+
+      def last
+        _siblings.where(:next_id => nil).first
+      end
+
+      def last!
+        last.update_attribute(:next_id, self.id)
       end
 
       def _siblings
