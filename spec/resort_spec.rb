@@ -267,6 +267,24 @@ module Resort
             article4.next.name.should == '3'
           end
         end
+        context 'appending 3 after 1' do
+          it "appends the element after another element" do
+            @article3.append_to(@article1)
+
+            article1 = Article.find_by_name('1')
+            article1.next.name.should == '3'
+            
+            article2 = Article.find_by_name('2')
+            article2.previous.name.should == '3'
+            article2.next.name.should == '4'
+
+            article3 = Article.find_by_name('3')
+            article3.previous.name.should == '1'
+            article3.next.name.should == '2'
+
+            @article4.previous.name.should == '2'
+          end
+        end
 
         context 'when the article is already after the other element' do
           it 'does nothing' do
