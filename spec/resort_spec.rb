@@ -290,8 +290,11 @@ module Resort
           it 'does nothing' do
             @article2.append_to(@article1)
 
-            @article1.next.name.should == '2'
-            @article2.previous.name.should == '1'
+            article1 = Article.find_by_name('1')
+            article2 = Article.find_by_name('2')
+
+            article1.next.name.should == '2'
+            article2.previous.name.should == '1'
           end
         end
       end

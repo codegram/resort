@@ -151,6 +151,8 @@ module Resort
 
       # Puts the object right after another object in the list.
       def append_to(another)
+        return if another.next_id == id
+
         if self.next
           delete_from_list
         elsif last? && self.previous
