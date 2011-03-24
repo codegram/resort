@@ -190,24 +190,24 @@ module Resort
           it "appends the element after another element" do
             @article1.append_to(@article2)
 
-            article2 = Article.find_by_name('2')
-            article2.next.name.should == '1'
-
             article1 = Article.find_by_name('1')
             article1.next.name.should == '3'
             article1.previous.name.should == '2'
             @article3.previous.name.should == '1'
+          end
 
+          it "sets the other element as first" do
+            @article1.append_to(@article2)
+
+            article2 = Article.find_by_name('2')
+            article2.next.name.should == '1'
             article2.should be_first
           end
         end
+
         context 'appending 1 after 3' do
           it "appends the element after another element" do
             @article1.append_to(@article3)
-
-            article2 = Article.find_by_name('2')
-            article2.should be_first
-            article2.previous.should be_nil
 
             article1 = Article.find_by_name('1')
             article1.should_not be_first
@@ -215,10 +215,18 @@ module Resort
             article1.next.name.should == '4'
 
             @article3.next.name.should == '1'
-
             @article4.previous.name.should == '1'
           end
+
+          it 'resets the first element' do
+            @article1.append_to(@article3)
+
+            article2 = Article.find_by_name('2')
+            article2.should be_first
+            article2.previous.should be_nil
+          end
         end
+
         context 'appending 2 after 3' do
           it "appends the element after another element" do
             @article2.append_to(@article3)

@@ -71,8 +71,16 @@ module Resort
       #
       # @return [ActiveRecord::Base] the first element of the list.
       def first_in_order
-        where(:first => true).first
+        scoped.where(:first => true).first
       end
+
+      # Returns the last element of the list.
+      #
+      # @return [ActiveRecord::Base] the last element of the list.
+      def last_in_order
+        scoped.where(:next_id => nil).first
+      end
+
       
       # Returns eager-loaded Components in order.
       #
@@ -146,7 +154,7 @@ module Resort
 
       # Puts the object in the last position of the list.
       def push
-        self.append_to(last) unless last?
+        self.append_to(self.class.last_in_order) unless last?
       end
 
       # Puts the object right after another object in the list.
@@ -180,15 +188,11 @@ module Resort
       end
 
       def last?
-        self.first != true && self.next_id == nil
-      end
-
-      def last
-        _siblings.where(:next_id => nil).first
+        !self.first && !self.next_id
       end
 
       def last!
-        last.update_attribute(:next_id, self.id)
+        self.class.last_in_order.update_attribute(:next_id, self.id)
       end
 
       def _siblings
