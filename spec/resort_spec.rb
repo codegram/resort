@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-class Article < ActiveRecord::Base
-  resort!
-end
-
 module Resort
   describe Sortable do
 
@@ -26,15 +22,8 @@ module Resort
     end
 
     describe 'ClassMethods' do
-      describe "#first_in_order" do
-        it 'returns the first element of the list' do
-          first = double :article
-          Article.should_receive(:where).with(:first => true).and_return [first]
 
-          Article.first_in_order
-        end
-      end
-      describe "#ordered" do
+      describe "ordering" do
         before do
           Article.destroy_all
 
@@ -42,17 +31,82 @@ module Resort
             Article.create(:name => i.to_s)
           end
 
-          @article1 = Article.find_by_name('0')
-          @article2 = Article.find_by_name('1')
-          @article3 = Article.find_by_name('2')
-          @article4 = Article.find_by_name('3')
+          Article.find_by_name('0').append_to(Article.find_by_name('3'))
+          Article.find_by_name('1').append_to(Article.find_by_name('3'))
+          Article.find_by_name('2').append_to(Article.find_by_name('3'))
+
+          @article1 = Article.find_by_name('3')
+          @article2 = Article.find_by_name('2')
+          @article3 = Article.find_by_name('1')
+          @article4 = Article.find_by_name('0')
         end
-        it 'returns the first element of the list' do
-          Article.ordered.should == [@article1, @article2, @article3, @article4]
+
+        describe "#first_in_order" do
+          it 'returns the first element of the list' do
+            Article.first_in_order.should == @article1
+          end
         end
+
+        describe "#last_in_order" do
+          it 'returns the last element of the list' do
+            Article.last_in_order.should == @article4
+          end
+        end
+
+        describe "#ordered" do
+          it 'returns all elements ordered' do
+            Article.ordered.should == [@article1, @article2, @article3, @article4]
+          end
+        end
+
         after do
           Article.destroy_all
         end
+      end
+    end
+
+    describe "siblings" do
+      before do
+        one_list = List.create(:name => 'My list')
+        another_list = List.create(:name => 'My other list')
+
+        4.times do |i|
+          one_list.items << ListItem.new(:name => "My list item #{i}")
+          another_list.items << ListItem.new(:name => "My other list item #{i}")
+        end
+
+      end
+
+      describe "#first_in_order" do
+        it 'returns the first element of the list' do
+          List.find_by_name('My list').items.first_in_order.name.should == "My list item 0"
+          List.find_by_name('My other list').items.first_in_order.name.should == "My other list item 0"
+        end
+      end
+
+      describe "#last_in_order" do
+        it 'returns the last element of the list' do
+          List.find_by_name('My list').items.last_in_order.name.should == "My list item 3"
+          List.find_by_name('My other list').items.last_in_order.name.should == "My other list item 3"
+        end
+      end
+
+      describe "#ordered" do
+        it 'returns all elements ordered' do
+          List.find_by_name('My list').items.ordered.map(&:name).should == ['My list item 0', 'My list item 1', 'My list item 2', 'My list item 3']
+          List.find_by_name('My other list').items.ordered.map(&:name).should == ['My other list item 0', 'My other list item 1', 'My other list item 2', 'My other list item 3']
+        end
+
+        it 'raises when ordering without scope' do
+          expect {
+            ListItem.ordered
+          }.to raise_error
+        end
+      end
+
+      after do
+        List.destroy_all
+        ListItem.destroy_all
       end
     end
 

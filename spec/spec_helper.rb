@@ -16,4 +16,34 @@ ActiveRecord::Schema.define do
 
     t.timestamps
   end
+
+  create_table :lists do |t|
+    t.string     :name
+    t.timestamps
+  end
+
+  create_table :list_items do |t|
+    t.string     :name
+    t.boolean :first
+    t.references :next
+    t.references :list
+    t.timestamps
+  end
+end
+
+class Article < ActiveRecord::Base
+  resort!
+end
+
+class List < ActiveRecord::Base
+  has_many :items, :class_name => 'ListItem'
+end
+
+class ListItem < ActiveRecord::Base
+  belongs_to :list
+  resort!
+
+  def siblings
+    self.list.items
+  end
 end
