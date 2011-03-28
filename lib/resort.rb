@@ -84,7 +84,7 @@ module Resort
       
       # Returns eager-loaded Components in order.
       #
-      # OPTIMIZE: Avoid creating as many hashes.
+      # OPTIMIZE: Use IdentityMap when available
       # @return [Array<ActiveRecord::Base>] the ordered elements
       def ordered
         ordered_elements = []
@@ -163,12 +163,7 @@ module Resort
       def append_to(another)
         return if another.next_id == id
 
-        if self.next
-          delete_from_list
-        elsif last? && self.previous
-          # self.previous.update_attribute(:next_id, nil)
-          self.previous = nil
-        end
+        delete_from_list
 
         self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
         another.update_attribute(:next_id, self.id) if another
@@ -178,14 +173,16 @@ module Resort
 
       def delete_from_list
         if first? && self.next
-          self.update_attribute(:first, nil) unless frozen?
-          self.next.first = true 
-          self.next.previous = nil
-          self.next.save!
+          self.next.update_attribute(:first, true)
         elsif self.previous
-          previous.next = self.next
-          previous.save!
-          self.update_attribute(:next_id, nil) unless frozen?
+          self.previous.update_attribute(:next_id, self.next_id)
+        end
+
+        unless frozen?
+          self.first = false 
+          self.next = nil 
+          self.previous = nil 
+          save!
         end
       end
 
