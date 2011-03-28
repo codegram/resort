@@ -1,5 +1,6 @@
 require 'rspec'
 require 'resort'
+require 'logger'
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
@@ -30,6 +31,8 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 end
+
+# ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 class Article < ActiveRecord::Base
   resort!
