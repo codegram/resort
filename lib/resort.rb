@@ -1,4 +1,4 @@
-require 'generators/active_record/resort_generator'
+require 'generators/active_record/resort_generator' if defined?(Rails)
 
 # # Resort
 #
