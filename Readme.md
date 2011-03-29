@@ -25,8 +25,8 @@ references a `next` element, which seems a bit more sensible :)
 
 First, run the migration for the model you want to Resort:
 
-    rails generate resort:migration product
-    rake db:migrate
+    $ rails generate resort:migration product
+    $ rake db:migrate
 
 Then in your Product model:
 
