@@ -1,3 +1,5 @@
+require 'generators/active_record/resort_generator'
+
 # # Resort
 #
 # A tool that allows any ActiveRecord model to be sorted.

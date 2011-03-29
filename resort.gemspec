@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 2.5.0'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'bluecloth'
+  s.add_development_dependency 'generator_spec', '~> 0.8.1'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
