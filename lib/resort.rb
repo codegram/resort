@@ -165,24 +165,28 @@ module Resort
 
         delete_from_list
 
-        self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
-        another.update_attribute(:next_id, self.id) if another
+        self.class.transaction do
+          self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
+          another.update_attribute(:next_id, self.id) if another
+        end
       end
 
       private
 
       def delete_from_list
-        if first? && self.next
-          self.next.update_attribute(:first, true)
-        elsif self.previous
-          self.previous.update_attribute(:next_id, self.next_id)
-        end
+        self.class.transaction do
+          if first? && self.next
+            self.next.update_attribute(:first, true)
+          elsif self.previous
+            self.previous.update_attribute(:next_id, self.next_id)
+          end
 
-        unless frozen?
-          self.first = false 
-          self.next = nil 
-          self.previous = nil 
-          save!
+          unless frozen?
+            self.first = false 
+            self.next = nil 
+            self.previous = nil 
+            save!
+          end
         end
       end
 
