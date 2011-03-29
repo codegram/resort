@@ -23,21 +23,9 @@ references a `next` element, which seems a bit more sensible :)
 
 ##Usage
 
-You must add two fields (`next_id` and `first`) to your model's table:
+First, run the migration for the model you want to Resort:
 
-    class AddResortFieldsToProducts < ActiveRecord::Migration
-      def self.up
-        add_column :products, :next_id, :integer
-        add_column :products, :first,   :boolean
-        add_index :products, :next_id
-        add_index :products, :first
-      end
-
-      def self.down
-        remove_column :products, :next_id
-        remove_column :products, :first
-      end
-    end
+    rails generate resort:migration product
 
 Then in your Product model:
 
