@@ -23,7 +23,7 @@ module Resort
 
       # Copies a migration file adding resort fields to a given model
       def copy_migration_file
-        migration_template 'migration.rb', 'db/migrate/add_resort_fields_to_#{table_name.pluralize}.rb'
+        migration_template 'migration.rb', "db/migrate/add_resort_fields_to_#{table_name.pluralize}.rb"
       end
     end
   end
