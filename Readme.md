@@ -57,6 +57,15 @@ separate tree of sortable products, you must override the `siblings` method:
         self.product_line.products
       end
     end
+
+### Concurrency
+
+Multiple users modifying the same list at the same time could be a problem, 
+so it's always a good practice to wrap the changes in a transaction:
+    
+    Product.transaction do
+      my_product.append_to(another_product)
+    end
         
 ###API
 
