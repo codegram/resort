@@ -5,3 +5,4 @@ pkg/*
 graph.png
 .yardoc/*
 doc/*
+tmp
