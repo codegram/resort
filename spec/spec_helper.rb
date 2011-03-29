@@ -46,6 +46,8 @@ class ListItem < ActiveRecord::Base
   belongs_to :list
   resort!
 
+  default_scope :order => 'created_at desc'
+
   def siblings
     self.list.items
   end

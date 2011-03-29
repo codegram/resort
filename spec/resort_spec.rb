@@ -126,13 +126,53 @@ module Resort
           Article.create(:name => 'last!')
 
           article = Article.find_by_name('last!')
+          first = Article.find_by_name('1')
 
           article.should be_last
+          article.next_id.should be_nil
           article.previous.name.should == '1'
+
+          first.next_id.should eq(article.id)
         end
       end
       after do
         Article.destroy_all
+      end
+
+      context "with custom siblings" do
+
+        context 'when there are no siblings' do
+          it 'prepends the element' do
+            one_list = List.create(:name => 'My list')
+            another_list = List.create(:name => 'My other list')
+            item = ListItem.create(:name => "My list item", :list => one_list)
+
+            item.should be_first
+            item.next.should be_nil
+            item.previous.should be_nil
+          end
+        end
+        context 'otherwise' do
+          it 'appends the element' do
+            one_list = List.create(:name => 'My list')
+            another_list = List.create(:name => 'My other list')
+            ListItem.create(:name => "1", :list => one_list)
+            ListItem.create(:name => "last!", :list => one_list)
+
+            first = ListItem.find_by_name('1')
+            last = ListItem.find_by_name('last!')
+
+            last.should be_last
+            last.next_id.should be_nil
+            last.previous.name.should == '1'
+
+            first.next_id.should eq(last.id)
+          end
+        end
+        after do
+          List.destroy_all
+          ListItem.destroy_all
+        end
       end
     end
 

@@ -105,7 +105,7 @@ module Resort
         elements.length.times do
           ordered_elements << elements[ordered_elements.last.next_id]
         end
-        ordered_elements
+        ordered_elements.compact
       end
     end
 
@@ -158,7 +158,7 @@ module Resort
 
       # Puts the object in the last position of the list.
       def push
-        self.append_to(self.class.last_in_order) unless last?
+        self.append_to(_siblings.last_in_order) unless last?
       end
 
       # Puts the object right after another object in the list.
@@ -197,7 +197,7 @@ module Resort
       end
 
       def last!
-        self.class.last_in_order.update_attribute(:next_id, self.id)
+        _siblings.last_in_order.update_attribute(:next_id, self.id)
       end
 
       def _siblings
