@@ -100,7 +100,7 @@ module Resort
           end
         end
 
-        raise "Multiple or no first items in the list where found. Consider defining a siblings method" if ordered_elements.length != 1
+        raise "Multiple or no first items in the list where found. Consider defining a siblings method" if ordered_elements.length != 1 && elements.length > 0
         
         elements.length.times do
           ordered_elements << elements[ordered_elements.last.next_id]
