@@ -140,8 +140,11 @@ module Resort
       # in the first position. Otherwise, it appends it to the end of the
       # empty list.
       def include_in_list!
-        _siblings.count > 0 ? last!\
-                            : prepend
+        self.class.transaction do
+          self.lock!
+          _siblings.count > 0 ? last!\
+                              : prepend
+        end
       end
 
       # Puts the object in the first position of the list.
@@ -149,8 +152,11 @@ module Resort
         return if first?
 
         if _siblings.count > 0
-          delete_from_list
-          _siblings.where(:first => true).first.append_to(self)
+          self.class.transaction do
+            self.lock!
+            delete_from_list
+            _siblings.where(:first => true).first.append_to(self)
+          end
         end
 
         self.update_attribute(:first, true)
@@ -158,16 +164,20 @@ module Resort
 
       # Puts the object in the last position of the list.
       def push
-        self.append_to(_siblings.last_in_order) unless last?
+        self.class.transaction do
+          self.lock!
+          self.append_to(_siblings.last_in_order) unless last?
+        end
       end
 
       # Puts the object right after another object in the list.
       def append_to(another)
         return if another.next_id == id
 
-        delete_from_list
-
         self.class.transaction do
+          self.lock!
+          another.lock!
+          delete_from_list
           self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
           another.update_attribute(:next_id, self.id) if another
         end
@@ -176,19 +186,19 @@ module Resort
       private
 
       def delete_from_list
-        self.class.transaction do
-          if first? && self.next
-            self.next.update_attribute(:first, true)
-          elsif self.previous
-            self.previous.update_attribute(:next_id, self.next_id)
-          end
+        if first? && self.next
+          self.next.lock!
+          self.next.update_attribute(:first, true)
+        elsif self.previous
+          self.previous.lock!
+          self.previous.update_attribute(:next_id, self.next_id)
+        end
 
-          unless frozen?
-            self.first = false 
-            self.next = nil 
-            self.previous = nil 
-            save!
-          end
+        unless frozen?
+          self.first = false 
+          self.next = nil 
+          self.previous = nil 
+          save!
         end
       end
 
