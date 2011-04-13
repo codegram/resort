@@ -93,7 +93,7 @@ module Resort
         elements = {}
 
         scoped.each do |element|
-          if element.first?
+          if ordered_elements.empty? && element.first?
             ordered_elements << element
           else
             elements[element.id] = element
