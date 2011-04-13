@@ -1,4 +1,8 @@
 require 'rspec'
+
+module Rails
+end
+
 require 'resort'
 require 'logger'
 
