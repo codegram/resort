@@ -168,6 +168,25 @@ module Resort
 
             first.next_id.should eq(last.id)
           end
+
+          it 'prepends the last element' do
+            one_list = List.create(:name => 'My list')
+            ListItem.create(:name => "First", :list => one_list)
+            ListItem.create(:name => "Second", :list => one_list)
+            third = ListItem.create(:name => "Third", :list => one_list)
+
+            third.prepend
+            first = ListItem.where(:name => "First", :list_id => one_list).first
+            second = ListItem.where(:name => "Second", :list_id => one_list).first
+            third = ListItem.where(:name => "Third", :list_id => one_list).first
+
+            first.should_not be_first
+            second.should_not be_first
+            third.should be_first
+            third.next.name.should == 'First'
+            first.next.name.should == 'Second'
+            second.next.should be_nil
+          end
         end
         after do
           List.destroy_all
@@ -269,6 +288,17 @@ module Resort
           article3.previous.should be_nil
           article3.next.name.should == '1'
         end
+
+        it "prepends the last element" do
+          @article4.prepend
+
+          article4 = Article.find_by_name('4')
+
+          article4.should be_first
+          article4.previous.should be_nil
+          article4.next.name.should == '1'
+        end
+
         context 'when the article is already first' do
           it 'does nothing' do
             @article1.prepend
