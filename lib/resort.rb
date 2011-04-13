@@ -154,7 +154,9 @@ module Resort
           return if first?
           if _siblings.count > 0
             delete_from_list
-            _siblings.where(:first => true).first.append_to(self)
+            old_first = self.class.first_in_order
+            self.update_attribute(:next_id, old_first.id)
+            old_first.update_attribute(:first, false)
           end
           self.update_attribute(:first, true)
         end
