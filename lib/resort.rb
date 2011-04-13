@@ -149,17 +149,15 @@ module Resort
 
       # Puts the object in the first position of the list.
       def prepend
-        return if first?
-
-        if _siblings.count > 0
-          self.class.transaction do
-            self.lock!
+        self.class.transaction do
+          self.lock!
+          return if first?
+          if _siblings.count > 0
             delete_from_list
             _siblings.where(:first => true).first.append_to(self)
           end
+          self.update_attribute(:first, true)
         end
-
-        self.update_attribute(:first, true)
       end
 
       # Puts the object in the last position of the list.
@@ -172,10 +170,9 @@ module Resort
 
       # Puts the object right after another object in the list.
       def append_to(another)
-        return if another.next_id == id
-
         self.class.transaction do
           self.lock!
+          return if another.next_id == id
           another.lock!
           delete_from_list
           self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
@@ -207,7 +204,10 @@ module Resort
       end
 
       def last!
-        _siblings.last_in_order.update_attribute(:next_id, self.id)
+        self.class.transaction do
+          self.lock!
+          _siblings.last_in_order.update_attribute(:next_id, self.id)
+        end
       end
 
       def _siblings
