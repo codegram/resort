@@ -154,7 +154,7 @@ module Resort
           return if first?
           if _siblings.count > 0
             delete_from_list
-            old_first = self.class.first_in_order
+            old_first = _siblings.first_in_order
             self.update_attribute(:next_id, old_first.id)
             old_first.update_attribute(:first, false)
           end
