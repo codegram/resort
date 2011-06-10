@@ -8,7 +8,9 @@ Resort provides sorting capabilities to your Rails 3 models.
 
 Or in your Gemfile:
 
-    gem 'resort'
+```ruby
+gem 'resort'
+```
 
 ##Rationale
 
@@ -30,31 +32,37 @@ First, run the migration for the model you want to Resort:
 
 Then in your Product model:
 
-    class Product < ActiveRecord::Base
-      resort!
-    end
+```ruby
+class Product < ActiveRecord::Base
+  resort!
+end
+```
 
 **NOTE**: By default, Resort will treat _all products_ as a single big tree.
 If you wanted to limit the tree scope, i.e. treating every ProductLine as a
 separate tree of sortable products, you must override the `siblings` method:
 
-    class Product < ActiveRecord::Base
-      resort!
+```ruby
+class Product < ActiveRecord::Base
+  resort!
 
-      def siblings
-        # Tree contains only products from my own product line
-        self.product_line.products
-      end
-    end
+  def siblings
+    # Tree contains only products from my own product line
+    self.product_line.products
+  end
+end
+```
 
 ### Concurrency
 
 Multiple users modifying the same list at the same time could be a problem, 
 so it's always a good practice to wrap the changes in a transaction:
     
-    Product.transaction do
-      my_product.append_to(another_product)
-    end
+```ruby
+Product.transaction do
+  my_product.append_to(another_product)
+end
+```
         
 ###API
 
