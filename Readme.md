@@ -66,28 +66,31 @@ end
         
 ###API
 
-Every time a product is created, it will be appended after the last element.
+**Every time a product is created, it will be appended after the last element.**
 
 Moreover, now a `product` responds to the following methods:
 
 * `first?` &mdash; Returns true if the element is the first of the tree.
 * `append_to(other_element)` &mdash; Appends the element _after_ another element.
+* `next` &mdash; Returns the next element in the list
+* `previous` &mdash; Returns the previous element in the list
 
 And the class Product has a new scope named `ordered` that returns the
 products in order.
 
 ### Examples
 
-Given our 'Product' example defined before, we can do things like:
+Given our `Product` example defined before, we can do things like:
 
 Getting products in order:
+
 ```ruby
 Product.first_in_order # returns the first ordered product.
 Product.last_in_order # returns the last ordered product.
 Product.ordered # returns all products ordered as an Array, not a Relation!
 ```
 
-Find elements with scopes or conditions ordered:
+Find ordered products with scopes or conditions:
 
 ```ruby
 Product.where('price > 10').ordered # => Ordered array of products with price > 10
@@ -140,7 +143,7 @@ bread.first? # => true
 milk = Product.create(:name => 'Milk', :vendor => Vendor.where(:name => 'Cow world'))
 milk.first? # => true
 
-# milk and product aren't neighbours
+# bread and milk aren't neighbours
 ```
 
 ##Under the hood
