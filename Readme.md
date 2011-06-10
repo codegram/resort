@@ -76,6 +76,73 @@ Moreover, now a `product` responds to the following methods:
 And the class Product has a new scope named `ordered` that returns the
 products in order.
 
+### Examples
+
+Given our 'Product' example defined before, we can do things like:
+
+Getting products in order:
+```ruby
+Product.first_in_order # returns the first ordered product.
+Product.last_in_order # returns the last ordered product.
+Product.ordered # returns all products ordered as an Array, not a Relation!
+```
+
+Find elements with scopes or conditions ordered:
+
+```ruby
+Product.where('price > 10').ordered # => Ordered array of products with price > 10
+Product.with_custom_scope.ordered # => Ordered array of products with your custom conditions
+```
+
+Modify the list of products:
+
+```ruby
+product = Product.create(:name => 'Bread')
+product.first? # => true
+
+another_product = Product.create(:name => 'Milk')
+yet_another_product = Product.create(:name => 'Salami')
+
+yet_another_product.append_to(product) # puts the products right after the first one
+
+Product.ordered.map(&:name) # => ['Bread', 'Salami', 'Milk']
+```
+
+Check neighbours:
+
+```ruby
+product = Product.create(:name => 'Bread')
+second_product = Product.create(:name => 'Milk')
+third_product = Product.create(:name => 'Salami')
+
+second_product.previous.name # => 'Bread'
+second_product.next.name # => 'Salami'
+
+third_product.next # => nil
+```
+
+Maybe you need different orders depending on the product vendor:
+
+```ruby
+class Product < ActiveRecord::Base
+  resort!
+
+  belongs_to :vendor
+
+  def siblings
+    self.vendor.products
+  end
+end
+
+bread = Product.create(:name => 'Bread', :vendor => Vendor.where(:name => 'Bread factory'))
+bread.first? # => true
+
+milk = Product.create(:name => 'Milk', :vendor => Vendor.where(:name => 'Cow world'))
+milk.first? # => true
+
+# milk and product aren't neighbours
+```
+
 ##Under the hood
 
 Run the test suite by typing:
