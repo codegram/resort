@@ -22,7 +22,7 @@ ActiveRecord::Schema.define do
     t.timestamps
   end
 
-  create_table :lists do |t|
+  create_table :ordered_lists do |t|
     t.string     :name
     t.timestamps
   end
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define do
     t.string     :name
     t.boolean :first
     t.references :next
-    t.references :list
+    t.references :ordered_list
     t.timestamps
   end
 end
@@ -42,17 +42,17 @@ class Article < ActiveRecord::Base
   resort!
 end
 
-class List < ActiveRecord::Base
+class OrderedList < ActiveRecord::Base
   has_many :items, :class_name => 'ListItem'
 end
 
 class ListItem < ActiveRecord::Base
-  belongs_to :list
+  belongs_to :ordered_list
   resort!
 
   default_scope :order => 'created_at desc'
 
   def siblings
-    self.list.items
+    self.ordered_list.items
   end
 end

@@ -17,7 +17,7 @@ module Resort
         (class << subject.class; self; end).ancestors.should include(Sortable::ClassMethods)
       end
       it 'defines a siblings method' do
-        subject.class.instance_methods.should include(:siblings)
+        subject.class.instance_methods.should include('siblings')
       end
     end
 
@@ -67,8 +67,8 @@ module Resort
 
     describe "siblings" do
       before do
-        one_list = List.create(:name => 'My list')
-        another_list = List.create(:name => 'My other list')
+        one_list = OrderedList.create(:name => 'My list')
+        another_list = OrderedList.create(:name => 'My other list')
 
         4.times do |i|
           one_list.items << ListItem.new(:name => "My list item #{i}")
@@ -79,22 +79,22 @@ module Resort
 
       describe "#first_in_order" do
         it 'returns the first element of the list' do
-          List.find_by_name('My list').items.first_in_order.name.should == "My list item 0"
-          List.find_by_name('My other list').items.first_in_order.name.should == "My other list item 0"
+          OrderedList.find_by_name('My list').items.first_in_order.name.should == "My list item 0"
+          OrderedList.find_by_name('My other list').items.first_in_order.name.should == "My other list item 0"
         end
       end
 
       describe "#last_in_order" do
         it 'returns the last element of the list' do
-          List.find_by_name('My list').items.last_in_order.name.should == "My list item 3"
-          List.find_by_name('My other list').items.last_in_order.name.should == "My other list item 3"
+          OrderedList.find_by_name('My list').items.last_in_order.name.should == "My list item 3"
+          OrderedList.find_by_name('My other list').items.last_in_order.name.should == "My other list item 3"
         end
       end
 
       describe "#ordered" do
         it 'returns all elements ordered' do
-          List.find_by_name('My list').items.ordered.map(&:name).should == ['My list item 0', 'My list item 1', 'My list item 2', 'My list item 3']
-          List.find_by_name('My other list').items.ordered.map(&:name).should == ['My other list item 0', 'My other list item 1', 'My other list item 2', 'My other list item 3']
+          OrderedList.find_by_name('My list').items.ordered.map(&:name).should == ['My list item 0', 'My list item 1', 'My list item 2', 'My list item 3']
+          OrderedList.find_by_name('My other list').items.ordered.map(&:name).should == ['My other list item 0', 'My other list item 1', 'My other list item 2', 'My other list item 3']
         end
 
         it 'raises when ordering without scope' do
@@ -105,7 +105,7 @@ module Resort
       end
 
       after do
-        List.destroy_all
+        OrderedList.destroy_all
         ListItem.destroy_all
       end
     end
@@ -143,9 +143,9 @@ module Resort
 
         context 'when there are no siblings' do
           it 'prepends the element' do
-            one_list = List.create(:name => 'My list')
-            another_list = List.create(:name => 'My other list')
-            item = ListItem.create(:name => "My list item", :list => one_list)
+            one_list = OrderedList.create(:name => 'My list')
+            another_list = OrderedList.create(:name => 'My other list')
+            item = ListItem.create(:name => "My list item", :ordered_list => one_list)
 
             item.should be_first
             item.next.should be_nil
@@ -154,10 +154,10 @@ module Resort
         end
         context 'otherwise' do
           it 'appends the element' do
-            one_list = List.create(:name => 'My list')
-            another_list = List.create(:name => 'My other list')
-            ListItem.create(:name => "1", :list => one_list)
-            ListItem.create(:name => "last!", :list => one_list)
+            one_list = OrderedList.create(:name => 'My list')
+            another_list = OrderedList.create(:name => 'My other list')
+            ListItem.create(:name => "1", :ordered_list => one_list)
+            ListItem.create(:name => "last!", :ordered_list => one_list)
 
             first = ListItem.find_by_name('1')
             last = ListItem.find_by_name('last!')
@@ -170,15 +170,15 @@ module Resort
           end
 
           it 'prepends the last element' do
-            one_list = List.create(:name => 'My list')
-            ListItem.create(:name => "First", :list => one_list)
-            ListItem.create(:name => "Second", :list => one_list)
-            third = ListItem.create(:name => "Third", :list => one_list)
+            one_list = OrderedList.create(:name => 'My list')
+            ListItem.create(:name => "First", :ordered_list => one_list)
+            ListItem.create(:name => "Second", :ordered_list => one_list)
+            third = ListItem.create(:name => "Third", :ordered_list => one_list)
 
             third.prepend
-            first = ListItem.where(:name => "First", :list_id => one_list).first
-            second = ListItem.where(:name => "Second", :list_id => one_list).first
-            third = ListItem.where(:name => "Third", :list_id => one_list).first
+            first = ListItem.where(:name => "First", :ordered_list_id => one_list).first
+            second = ListItem.where(:name => "Second", :ordered_list_id => one_list).first
+            third = ListItem.where(:name => "Third", :ordered_list_id => one_list).first
 
             first.should_not be_first
             second.should_not be_first
@@ -189,7 +189,7 @@ module Resort
           end
         end
         after do
-          List.destroy_all
+          OrderedList.destroy_all
           ListItem.destroy_all
         end
       end
@@ -259,7 +259,7 @@ module Resort
         @article3 = Article.find_by_name('3')
         @article4 = Article.find_by_name('4')
       end
-      
+
       describe "#push" do
         it "appends the element to the list" do
           @article1.push
@@ -357,7 +357,7 @@ module Resort
 
             article1 = Article.find_by_name('1')
             article1.next.name.should == '3'
-            
+
             article2 = Article.find_by_name('2')
             article2.previous.name.should == '3'
             article2.next.name.should == '4'
@@ -405,7 +405,7 @@ module Resort
 
             article1 = Article.find_by_name('1')
             article1.next.name.should == '3'
-            
+
             article2 = Article.find_by_name('2')
             article2.previous.name.should == '3'
             article2.next.name.should == '4'

@@ -6,3 +6,4 @@ graph.png
 .yardoc/*
 doc/*
 tmp
+*.rbc
