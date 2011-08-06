@@ -17,7 +17,7 @@ module Resort
         (class << subject.class; self; end).ancestors.should include(Sortable::ClassMethods)
       end
       it 'defines a siblings method' do
-        subject.class.instance_methods.should include('siblings')
+        subject.should respond_to(:siblings)
       end
     end
 
