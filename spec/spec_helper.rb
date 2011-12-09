@@ -1,6 +1,12 @@
 require 'rspec'
 
 module Rails
+  class << self
+    # 3.0 defaults this, 3.1 does not
+    def application
+      "application"
+    end
+  end
 end
 
 require 'resort'

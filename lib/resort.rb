@@ -155,10 +155,10 @@ module Resort
           if _siblings.count > 0
             delete_from_list
             old_first = _siblings.first_in_order
-            self.update_attribute(:next_id, old_first.id)
-            old_first.update_attribute(:first, false)
+            self.update_attribute(:next_id, old_first.id) || raise(RecordNotSaved)
+            old_first.update_attribute(:first, false) || raise(RecordNotSaved)
           end
-          self.update_attribute(:first, true)
+          self.update_attribute(:first, true) || raise(RecordNotSaved)
         end
       end
 
@@ -177,8 +177,12 @@ module Resort
           return if another.next_id == id
           another.lock!
           delete_from_list
-          self.update_attribute(:next_id, another.next_id) if self.next_id or (another && another.next_id)
-          another.update_attribute(:next_id, self.id) if another
+          if self.next_id or (another && another.next_id)
+            self.update_attribute(:next_id, another.next_id) || raise(RecordNotSaved)
+          end
+          if another
+            another.update_attribute(:next_id, self.id) || raise(RecordNotSaved)
+          end
         end
       end
 
@@ -187,16 +191,16 @@ module Resort
       def delete_from_list
         if first? && self.next
           self.next.lock!
-          self.next.update_attribute(:first, true)
+          self.next.update_attribute(:first, true) || raise(RecordNotSaved)
         elsif self.previous
           self.previous.lock!
-          self.previous.update_attribute(:next_id, self.next_id)
+          p = self.previous
+          self.previous = nil unless frozen?
+          p.update_attribute(:next_id, self.next_id) || raise(RecordNotSaved)
         end
-
         unless frozen?
           self.first = false 
           self.next = nil 
-          self.previous = nil 
           save!
         end
       end
@@ -208,7 +212,7 @@ module Resort
       def last!
         self.class.transaction do
           self.lock!
-          _siblings.last_in_order.update_attribute(:next_id, self.id)
+          _siblings.last_in_order.update_attribute(:next_id, self.id) || raise(RecordNotSaved)
         end
       end
 
