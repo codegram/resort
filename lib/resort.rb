@@ -1,4 +1,5 @@
 require 'generators/active_record/resort_generator' if defined?(Rails)
+require 'active_record' unless defined?(ActiveRecord)
 
 # # Resort
 #
@@ -155,10 +156,10 @@ module Resort
           if _siblings.count > 0
             delete_from_list
             old_first = _siblings.first_in_order
-            self.update_attribute(:next_id, old_first.id) || raise(RecordNotSaved)
-            old_first.update_attribute(:first, false) || raise(RecordNotSaved)
+            raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:next_id, old_first.id)
+            raise(ActiveRecord::RecordNotSaved) unless old_first.update_attribute(:first, false)
           end
-          self.update_attribute(:first, true) || raise(RecordNotSaved)
+          raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:first, true)
         end
       end
 
@@ -178,10 +179,10 @@ module Resort
           another.lock!
           delete_from_list
           if self.next_id or (another && another.next_id)
-            self.update_attribute(:next_id, another.next_id) || raise(RecordNotSaved)
+            raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:next_id, another.next_id)
           end
           if another
-            another.update_attribute(:next_id, self.id) || raise(RecordNotSaved)
+            raise(ActiveRecord::RecordNotSaved) unless another.update_attribute(:next_id, self.id)
           end
         end
       end
@@ -191,12 +192,12 @@ module Resort
       def delete_from_list
         if first? && self.next
           self.next.lock!
-          self.next.update_attribute(:first, true) || raise(RecordNotSaved)
+          raise(ActiveRecord::RecordNotSaved) unless self.next.update_attribute(:first, true)
         elsif self.previous
           self.previous.lock!
           p = self.previous
           self.previous = nil unless frozen?
-          p.update_attribute(:next_id, self.next_id) || raise(RecordNotSaved)
+          raise(ActiveRecord::RecordNotSaved) unless p.update_attribute(:next_id, self.next_id)
         end
         unless frozen?
           self.first = false 
@@ -212,7 +213,7 @@ module Resort
       def last!
         self.class.transaction do
           self.lock!
-          _siblings.last_in_order.update_attribute(:next_id, self.id) || raise(RecordNotSaved)
+          raise(ActiveRecord::RecordNotSaved) unless _siblings.last_in_order.update_attribute(:next_id, self.id)
         end
       end
 
@@ -233,5 +234,4 @@ module Resort
   end
 end
 
-require 'active_record' unless defined?(ActiveRecord)
 ActiveRecord::Base.extend Resort::ClassMethods
