@@ -187,6 +187,7 @@ module Resort
             first.next.name.should == 'Second'
             second.next.should be_nil
           end
+
         end
         after do
           OrderedList.destroy_all
@@ -299,6 +300,11 @@ module Resort
           article4.next.name.should == '1'
         end
 
+        it 'will raise ActiveRecord::RecordNotSaved if update fails' do
+          @article2.should_receive(:update_attribute).and_return(false)
+          expect { @article2.prepend }.to raise_error(ActiveRecord::RecordNotSaved)
+        end
+
         context 'when the article is already first' do
           it 'does nothing' do
             @article1.prepend
@@ -310,6 +316,11 @@ module Resort
       end
 
       describe "#append_to" do
+        it 'will raise ActiveRecord::RecordNotSaved if update fails' do
+          @article2.should_receive(:update_attribute).and_return(false)
+          expect { @article2.append_to(@article3) }.to raise_error(ActiveRecord::RecordNotSaved)
+        end
+
         context 'appending 1 after 2' do
           it "appends the element after another element" do
             @article1.append_to(@article2)
