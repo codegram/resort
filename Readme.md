@@ -1,4 +1,4 @@
-#resort
+#resort [![Build Status](https://secure.travis-ci.org/codegram/resort.png)](http://travis-ci.org/codegram/resort)
 
 Resort provides sorting capabilities to your Rails 3 models.
 
@@ -55,15 +55,15 @@ end
 
 ### Concurrency
 
-Multiple users modifying the same list at the same time could be a problem, 
+Multiple users modifying the same list at the same time could be a problem,
 so it's always a good practice to wrap the changes in a transaction:
-    
+
 ```ruby
 Product.transaction do
   my_product.append_to(another_product)
 end
 ```
-        
+
 ###API
 
 **Every time a product is created, it will be appended after the last element.**
@@ -157,7 +157,7 @@ You can also build the documentation with the following command:
     rake docs
 
 ## Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
