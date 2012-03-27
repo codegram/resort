@@ -5,4 +5,3 @@ rvm:
   - ree
   - ruby-head
   - rbx
-  - rbx-2.0
