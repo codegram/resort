@@ -14,12 +14,12 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "resort"
 
-  s.add_runtime_dependency 'activerecord', '>= 3.0.5'
+  s.add_runtime_dependency 'activerecord', '>= 4.0.4'
   s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rspec', '~> 2.5.0'
+  s.add_development_dependency 'rspec', '~> 2.14.1'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'bluecloth'
-  s.add_development_dependency 'generator_spec', '~> 0.8.1'
+  s.add_development_dependency 'generator_spec', '~> 0.9.2'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
