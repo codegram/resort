@@ -25,7 +25,7 @@ require 'active_record' unless defined?(ActiveRecord)
 #       # considered as `peers` in the list representing the sorted
 #       # products, i.e. its siblings.
 #       def siblings
-#         self.class.scoped
+#         self.class.all
 #       end
 #     end
 #
@@ -74,14 +74,14 @@ module Resort
       #
       # @return [ActiveRecord::Base] the first element of the list.
       def first_in_order
-        scoped.where(:first => true).first
+        all.where(:first => true).first
       end
 
       # Returns the last element of the list.
       #
       # @return [ActiveRecord::Base] the last element of the list.
       def last_in_order
-        scoped.where(:next_id => nil).first
+        all.where(:next_id => nil).first
       end
 
       
@@ -93,7 +93,7 @@ module Resort
         ordered_elements = []
         elements = {}
 
-        scoped.each do |element|
+        all.each do |element|
           if ordered_elements.empty? && element.first?
             ordered_elements << element
           else
@@ -133,7 +133,7 @@ module Resort
       #
       # @return [ActiveRecord::Relation] the element's siblings relation.
       def siblings
-        self.class.scoped
+        self.class.all
       end
       # Includes the object in the linked list.
       #
