@@ -1,1 +1,1 @@
-rvm --create use ruby-1.9.3-p0@resort
+rvm --create use ruby-2.1.1@resort

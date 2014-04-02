@@ -56,7 +56,7 @@ class ListItem < ActiveRecord::Base
   belongs_to :ordered_list
   resort!
 
-  default_scope :order => 'created_at desc'
+  default_scope { order('created_at desc') }
 
   def siblings
     self.ordered_list.items
