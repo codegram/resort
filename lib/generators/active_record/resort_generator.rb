@@ -17,7 +17,7 @@ module Resort
           "%.3d" % (current_migration_number(dirname) + 1)
         end
       end
-      
+
       desc "Creates a Resort migration."
       source_root File.expand_path("../templates", __FILE__)
 

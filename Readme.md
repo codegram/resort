@@ -1,6 +1,6 @@
 #resort [![Build Status](https://secure.travis-ci.org/codegram/resort.png)](http://travis-ci.org/codegram/resort)
 
-Resort provides sorting capabilities to your Rails 3 models.
+Resort provides sorting capabilities to your Rails models.
 
 ##Install
 
@@ -72,8 +72,10 @@ Moreover, now a `product` responds to the following methods:
 
 * `first?` &mdash; Returns true if the element is the first of the tree.
 * `append_to(other_element)` &mdash; Appends the element _after_ another element.
-* `next` &mdash; Returns the next element in the list
-* `previous` &mdash; Returns the previous element in the list
+* `prepend` &mdash; Moves the elemnt to the beggining of the list (sets it as
+  first).
+* `next` &mdash; Returns the next element in the list.
+* `previous` &mdash; Returns the previous element in the list.
 
 And the class Product has a new scope named `ordered` that returns the
 products in order.

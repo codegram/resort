@@ -84,7 +84,7 @@ module Resort
         all.where(:next_id => nil).first
       end
 
-      
+
       # Returns eager-loaded Components in order.
       #
       # OPTIMIZE: Use IdentityMap when available
@@ -102,7 +102,7 @@ module Resort
         end
 
         raise "Multiple or no first items in the list where found. Consider defining a siblings method" if ordered_elements.length != 1 && elements.length > 0
-        
+
         elements.length.times do
           ordered_elements << elements[ordered_elements.last.next_id]
         end
@@ -144,7 +144,7 @@ module Resort
         self.class.transaction do
           self.lock!
           _siblings.count > 0 ? last!\
-                              : prepend
+            : prepend
         end
       end
 
@@ -156,8 +156,8 @@ module Resort
           if _siblings.count > 0
             delete_from_list
             old_first = _siblings.first_in_order
-            raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:next_id, old_first.id)
-            raise(ActiveRecord::RecordNotSaved) unless old_first.update_attribute(:first, false)
+            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't set next_id from previous first element.")) unless self.update_attribute(:next_id, old_first.id)
+            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't reset previous firt element")) unless old_first.update_attribute(:first, false)
           end
           raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:first, true)
         end
@@ -179,10 +179,10 @@ module Resort
           another.lock!
           delete_from_list
           if self.next_id or (another && another.next_id)
-            raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:next_id, another.next_id)
+            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't append element")) unless self.update_attribute(:next_id, another.next_id)
           end
           if another
-            raise(ActiveRecord::RecordNotSaved) unless another.update_attribute(:next_id, self.id)
+            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't set this element to another's next")) unless another.update_attribute(:next_id, self.id)
           end
         end
       end
@@ -200,8 +200,8 @@ module Resort
           raise(ActiveRecord::RecordNotSaved) unless p.update_attribute(:next_id, self.next_id)
         end
         unless frozen?
-          self.first = false 
-          self.next = nil 
+          self.first = false
+          self.next = nil
           save!
         end
       end
