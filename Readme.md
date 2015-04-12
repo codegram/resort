@@ -72,7 +72,7 @@ Moreover, now a `product` responds to the following methods:
 
 * `first?` &mdash; Returns true if the element is the first of the tree.
 * `append_to(other_element)` &mdash; Appends the element _after_ another element.
-* `prepend` &mdash; Moves the elemnt to the beggining of the list (sets it as
+* `prepend` &mdash; Moves the element to the beginning of the list (sets it as
   first).
 * `next` &mdash; Returns the next element in the list.
 * `previous` &mdash; Returns the previous element in the list.
