@@ -197,7 +197,7 @@ module Resort
           self.previous.lock!
           p = self.previous
           self.previous = nil unless frozen?
-          raise(ActiveRecord::RecordNotSaved) unless p.update_attribute(:next_id, self.next_id)
+          raise(ActiveRecord::RecordNotSaved) unless p.update_column(:next_id, self.next_id)
         end
         unless frozen?
           self.first = false
