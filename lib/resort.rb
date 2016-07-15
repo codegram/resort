@@ -157,7 +157,7 @@ module Resort
             delete_from_list
             old_first = _siblings.first_in_order
             raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't set next_id from previous first element.")) unless self.update_attribute(:next_id, old_first.id)
-            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't reset previous firt element")) unless old_first.update_attribute(:first, false)
+            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't reset previous first element")) unless old_first.update_attribute(:first, false)
           end
           raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:first, true)
         end
