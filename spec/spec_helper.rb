@@ -25,12 +25,12 @@ ActiveRecord::Schema.define do
     t.boolean :first
     t.references :next
 
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table :ordered_lists do |t|
     t.string     :name
-    t.timestamps
+    t.timestamps null: false
   end
 
   create_table :list_items do |t|
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define do
     t.boolean :first
     t.references :next
     t.references :ordered_list
-    t.timestamps
+    t.timestamps null: false
   end
 end
 
