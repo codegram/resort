@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require 'rspec'
 
 module Rails
   class << self
     # 3.0 defaults this, 3.1 does not
     def application
-      "application"
+      'application'
     end
   end
 end
@@ -13,8 +14,8 @@ require 'resort'
 require 'logger'
 
 ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
-  :database => ':memory:'
+  adapter: 'sqlite3',
+  database: ':memory:'
 )
 
 ActiveRecord::Schema.define do
@@ -49,7 +50,7 @@ class Article < ActiveRecord::Base
 end
 
 class OrderedList < ActiveRecord::Base
-  has_many :items, :class_name => 'ListItem'
+  has_many :items, class_name: 'ListItem'
 end
 
 class ListItem < ActiveRecord::Base
@@ -59,6 +60,6 @@ class ListItem < ActiveRecord::Base
   default_scope { order('created_at desc') }
 
   def siblings
-    self.ordered_list.items
+    ordered_list.items
   end
 end

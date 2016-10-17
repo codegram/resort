@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'generators/active_record/resort_generator' if defined?(Rails)
 require 'active_record' unless defined?(ActiveRecord)
 
@@ -60,8 +61,8 @@ module Resort
         base.extend ClassMethods
         base.send :include, InstanceMethods
 
-        base.has_one :previous, :class_name => base.name, :foreign_key => 'next_id', :inverse_of => :next
-        base.belongs_to :next, :class_name => base.name, :inverse_of => :previous
+        base.has_one :previous, class_name: base.name, foreign_key: 'next_id', inverse_of: :next
+        base.belongs_to :next, class_name: base.name, inverse_of: :previous
 
         base.after_create :include_in_list!
         base.after_destroy :delete_from_list
@@ -74,16 +75,15 @@ module Resort
       #
       # @return [ActiveRecord::Base] the first element of the list.
       def first_in_order
-        all.where(:first => true).first
+        all.where(first: true).first
       end
 
       # Returns the last element of the list.
       #
       # @return [ActiveRecord::Base] the last element of the list.
       def last_in_order
-        all.where(:next_id => nil).first
+        all.where(next_id: nil).first
       end
-
 
       # Returns eager-loaded Components in order.
       #
@@ -101,7 +101,7 @@ module Resort
           end
         end
 
-        raise "Multiple or no first items in the list where found. Consider defining a siblings method" if ordered_elements.length != 1 && elements.length > 0
+        raise 'Multiple or no first items in the list where found. Consider defining a siblings method' if ordered_elements.length != 1 && elements.length > 0
 
         elements.length.times do
           ordered_elements << elements[ordered_elements.last.next_id]
@@ -112,7 +112,6 @@ module Resort
 
     # Instance methods to use.
     module InstanceMethods
-
       # Default definition of siblings, i.e. every instance of the model.
       #
       # Can be overriden to specify a different scope for the siblings.
@@ -135,6 +134,7 @@ module Resort
       def siblings
         self.class.all
       end
+
       # Includes the object in the linked list.
       #
       # If there are no other objects, it prepends the object so that it is
@@ -142,7 +142,7 @@ module Resort
       # empty list.
       def include_in_list!
         self.class.transaction do
-          self.lock!
+          lock!
           _siblings.count > 0 ? last!\
             : prepend
         end
@@ -151,39 +151,50 @@ module Resort
       # Puts the object in the first position of the list.
       def prepend
         self.class.transaction do
-          self.lock!
+          lock!
           return if first?
           if _siblings.count > 0
             delete_from_list
             old_first = _siblings.first_in_order
-            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't set next_id from previous first element.")) unless self.update_attribute(:next_id, old_first.id)
-            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't reset previous first element")) unless old_first.update_attribute(:first, false)
+            raise ActiveRecord::RecordNotSaved, "[Resort] - Couldn't set next_id from previous first element." unless update_attribute(:next_id, old_first.id)
+            raise ActiveRecord::RecordNotSaved, "[Resort] - Couldn't reset previous first element" unless old_first.update_attribute(:first, false)
           end
-          raise(ActiveRecord::RecordNotSaved) unless self.update_attribute(:first, true)
+          raise(ActiveRecord::RecordNotSaved) unless update_attribute(:first, true)
         end
       end
 
       # Puts the object in the last position of the list.
       def push
         self.class.transaction do
-          self.lock!
-          self.append_to(_siblings.last_in_order) unless last?
+          lock!
+          append_to(_siblings.last_in_order) unless last?
         end
       end
 
       # Puts the object right after another object in the list.
       def append_to(another)
         self.class.transaction do
-          self.lock!
+          lock!
           return if another.next_id == id
           another.lock!
           delete_from_list
-          if self.next_id or (another && another.next_id)
-            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't append element")) unless self.update_attribute(:next_id, another.next_id)
+          if next_id || (another && another.next_id)
+            raise ActiveRecord::RecordNotSaved, "[Resort] - Couldn't append element" unless update_attribute(:next_id, another.next_id)
           end
           if another
-            raise(ActiveRecord::RecordNotSaved.new("[Resort] - Couldn't set this element to another's next")) unless another.update_attribute(:next_id, self.id)
+            raise ActiveRecord::RecordNotSaved, "[Resort] - Couldn't set this element to another's next" unless another.update_attribute(:next_id, id)
           end
+        end
+      end
+
+      def last?
+        !first && !next_id
+      end
+
+      def last!
+        self.class.transaction do
+          lock!
+          raise(ActiveRecord::RecordNotSaved) unless _siblings.last_in_order.update_attribute(:next_id, id)
         end
       end
 
@@ -193,11 +204,11 @@ module Resort
         if first? && self.next
           self.next.lock!
           raise(ActiveRecord::RecordNotSaved) unless self.next.update_attribute(:first, true)
-        elsif self.previous
-          self.previous.lock!
-          p = self.previous
+        elsif previous
+          previous.lock!
+          p = previous
           self.previous = nil unless frozen?
-          raise(ActiveRecord::RecordNotSaved) unless p.update_column(:next_id, self.next_id)
+          raise(ActiveRecord::RecordNotSaved) unless p.update_column(:next_id, next_id)
         end
         unless frozen?
           self.first = false
@@ -206,20 +217,9 @@ module Resort
         end
       end
 
-      def last?
-        !self.first && !self.next_id
-      end
-
-      def last!
-        self.class.transaction do
-          self.lock!
-          raise(ActiveRecord::RecordNotSaved) unless _siblings.last_in_order.update_attribute(:next_id, self.id)
-        end
-      end
-
       def _siblings
         table = self.class.arel_table
-        siblings.where(table[:id].not_eq(self.id))
+        siblings.where(table[:id].not_eq(id))
       end
     end
   end

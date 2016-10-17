@@ -1,6 +1,6 @@
 #resort [![Build Status](https://secure.travis-ci.org/codegram/resort.png)](http://travis-ci.org/codegram/resort)
 
-Resort provides sorting capabilities to your Rails models.
+Resort provides sorting capabilities to your Rails (4+) models.
 
 ##Install
 
