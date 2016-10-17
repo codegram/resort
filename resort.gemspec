@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "resort"
 
-  s.add_runtime_dependency 'activerecord', '~> 4'
+  s.add_runtime_dependency 'activerecord', '~> 5'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec', '~> 2.14.1'
   s.add_development_dependency 'yard'
