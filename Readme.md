@@ -148,11 +148,11 @@ milk.first? # => true
 # bread and milk aren't neighbours
 ```
 
-##Under the hood
+## Under the hood
 
 Run the test suite by typing:
 
-    rake spec
+    rake
 
 You can also build the documentation with the following command:
 
@@ -169,4 +169,4 @@ You can also build the documentation with the following command:
 
 ## Copyright
 
-Copyright (c) 2011 Codegram. See LICENSE for details.
+Copyright (c) Codegram. See LICENSE for details.
