@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require 'bundler'
 Bundler::GemHelper.install_tasks
 
 require 'rspec/core/rake_task'
-desc "Run resort specs"
+desc 'Run resort specs'
 RSpec::Core::RakeTask.new
 
 require 'yard'
@@ -15,33 +16,28 @@ site = 'doc'
 source_branch = 'master'
 deploy_branch = 'gh-pages'
 
-desc "generate and deploy documentation website to github pages"
+desc 'generate and deploy documentation website to github pages'
 multitask :pages do
   puts ">>> Deploying #{deploy_branch} branch to Github Pages <<<"
   require 'git'
   repo = Git.open('.')
   puts "\n>>> Checking out #{deploy_branch} branch <<<\n"
-  repo.branch("#{deploy_branch}").checkout
-  (Dir["*"] - [site]).each { |f| rm_rf(f) }
-  Dir["#{site}/*"].each {|f| mv(f, "./")}
+  repo.branch(deploy_branch.to_s).checkout
+  (Dir['*'] - [site]).each { |f| rm_rf(f) }
+  Dir["#{site}/*"].each { |f| mv(f, './') }
   rm_rf(site)
   puts "\n>>> Moving generated site files <<<\n"
-  Dir["**/*"].each {|f| repo.add(f) }
-  repo.status.deleted.each {|f, s| repo.remove(f)}
+  Dir['**/*'].each { |f| repo.add(f) }
+  repo.status.deleted.each { |f, _s| repo.remove(f) }
   puts "\n>>> Commiting: Site updated at #{Time.now.utc} <<<\n"
-  message = ENV["MESSAGE"] || "Site updated at #{Time.now.utc}"
+  message = ENV['MESSAGE'] || "Site updated at #{Time.now.utc}"
   repo.commit(message)
   puts "\n>>> Pushing generated site to #{deploy_branch} branch <<<\n"
   repo.push
   puts "\n>>> Github Pages deploy complete <<<\n"
-  repo.branch("#{source_branch}").checkout
+  repo.branch(source_branch.to_s).checkout
 end
 
-task :doc => [:docs]
+task doc: [:docs]
 
-desc "Generate and open class diagram (needs Graphviz installed)"
-task :graph do |t|
- `bundle exec yard graph -d --full --no-private | dot -Tpng -o graph.png && open graph.png`
-end
-
-task :default => [:spec]
+task default: [:spec]

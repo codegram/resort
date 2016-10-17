@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'action_controller'
 require 'action_view'
@@ -14,23 +15,21 @@ module Resort
 
       before(:all) do
         prepare_destination
-        mkdir File.join(self.test_case.destination_root, 'config')
+        mkdir File.join(test_case.destination_root, 'config')
         run_generator
       end
 
       it 'generates Resort migration' do
-        destination_root.should have_structure {
-
-          directory "db" do
-            directory "migrate" do
-              migration "add_resort_fields_to_articles" do
-                contains "class AddResortFieldsToArticles"
-                contains ":articles, :next_id"
-                contains ":articles, :first"
+        expect(destination_root).to have_structure {
+          directory 'db' do
+            directory 'migrate' do
+              migration 'add_resort_fields_to_articles' do
+                contains 'class AddResortFieldsToArticles'
+                contains ':articles, :next_id'
+                contains ':articles, :first'
               end
             end
           end
-
         }
       end
     end
