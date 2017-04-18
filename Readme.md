@@ -1,8 +1,8 @@
-#resort [![Build Status](https://secure.travis-ci.org/codegram/resort.png)](http://travis-ci.org/codegram/resort)
+# resort [![Build Status](https://secure.travis-ci.org/codegram/resort.png)](http://travis-ci.org/codegram/resort)
 
 Resort provides sorting capabilities to your Rails (4+) models.
 
-##Install
+## Install
 
     $ gem install resort
 
@@ -12,7 +12,7 @@ Or in your Gemfile:
 gem 'resort'
 ```
 
-##Rationale
+## Rationale
 
 Most other sorting plugins work with an absolute `position` attribute that sets
 the _weight_ of a given element within a tree. This field has no semantic sense,
@@ -23,7 +23,7 @@ Resort is implemented like a [linked list](http://en.wikipedia.org/wiki/Linked_l
 rather than relying on absolute position values. This way, every model
 references a `next` element, which seems a bit more sensible :)
 
-##Usage
+## Usage
 
 First, run the migration for the model you want to Resort:
 
@@ -64,7 +64,7 @@ Product.transaction do
 end
 ```
 
-###API
+### API
 
 **Every time a product is created, it will be appended after the last element.**
 
