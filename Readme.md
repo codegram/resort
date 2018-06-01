@@ -139,10 +139,10 @@ class Product < ActiveRecord::Base
   end
 end
 
-bread = Product.create(:name => 'Bread', :vendor => Vendor.where(:name => 'Bread factory'))
+bread = Product.create(:name => 'Bread', :vendor => Vendor.where(:name => 'Bread factory').first)
 bread.first? # => true
 
-milk = Product.create(:name => 'Milk', :vendor => Vendor.where(:name => 'Cow world'))
+milk = Product.create(:name => 'Milk', :vendor => Vendor.where(:name => 'Cow world').first)
 milk.first? # => true
 
 # bread and milk aren't neighbours
